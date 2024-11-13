@@ -1,0 +1,7 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "files.associations": {
+    "esp_console.h": "c"
+  },
+  "idf.adapterTargetName": "esp32c3"
+}

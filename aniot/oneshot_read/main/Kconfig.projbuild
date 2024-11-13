@@ -1,0 +1,9 @@
+menu "Example Configuration"
+
+    config EXAMPLE_N
+        int "Number of samples to average"
+        default 5
+        help
+            Number of samples to average.
+
+endmenu

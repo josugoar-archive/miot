@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+    <script>
+        // Create new WebSocket connection
+        var mySocket = new WebSocket("ws://[::1]:1337");
+
+        // Associate listeners
+        mySocket.onopen = function(evt) {
+            console.log("WebSocket connection established.");
+
+            // Send data when the connection is open
+            mySocket.send("WebSocket Rocks!");
+        };
+
+        mySocket.onmessage = function(evt) {
+            console.log("Received message: " + evt.data);
+        };
+
+        mySocket.onclose = function(evt) {
+            console.log("WebSocket closed with status: " + evt.code);
+        };
+
+        mySocket.onerror = function(evt) {
+            console.error("WebSocket error:", evt);
+        };
+
+        // Optionally close the WebSocket after 5 seconds
+        setTimeout(function() {
+            mySocket.close();
+            console.log("WebSocket connection closed.");
+        }, 5000);
+    </script>
+</head>
+<body>
+    <h1>Check the Console for WebSocket output</h1>
+</body>
+</html>

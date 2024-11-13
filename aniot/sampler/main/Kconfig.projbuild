@@ -1,0 +1,17 @@
+menu "Example Configuration"
+
+    config SENSOR_SAMPLING_PERIOD
+        int "Sensor sampling period in s"
+        range 0 3600
+        default 1
+        help
+            Define the sensor sampling period in seconds.
+
+    config BUTTON_SAMPLING_PERIOD
+        int "Button sampling period in s"
+        range 0 3600
+        default 1
+        help
+            Define the button sampling period in seconds.
+
+endmenu

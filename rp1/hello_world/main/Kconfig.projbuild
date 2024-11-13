@@ -1,0 +1,18 @@
+menu "Example Configuration"
+
+    config TASK_1_MS_TO_DELAY
+        int "Delay period in ms for task 1"
+        range 10 3600000
+        default 1000
+        help
+            Define the delay period in milliseconds for task 1.
+
+
+    config TASK_2_MS_TO_DELAY
+        int "Delay period in ms for task 2"
+        range 10 3600000
+        default 1000
+        help
+            Define the delay period in milliseconds for task 2.
+
+endmenu

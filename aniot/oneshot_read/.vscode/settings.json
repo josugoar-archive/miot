@@ -1,0 +1,21 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.port": "/dev/ttyUSB0",
+  "idf.adapterTargetName": "esp32",
+  "idf.openOcdConfigs": [
+    "interface/ftdi/esp32_devkitj_v1.cfg",
+    "target/esp32.cfg"
+  ],
+  "files.associations": {
+    "gp2y0a41sk0f.h": "c",
+    "esp_err.h": "c",
+    "freertos.h": "c",
+    "adc_cali.h": "c",
+    "adc_oneshot.h": "c",
+    "soc_caps.h": "c",
+    "adc_cali_scheme.h": "c",
+    "esp_check.h": "c",
+    "esp_timer.h": "c",
+    "string.h": "c"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.adapterTargetName": "esp32c3",
+  "idf.flashType": "UART",
+  "idf.openOcdConfigs": [
+    "board/esp32c3-builtin.cfg"
+  ],
+  "idf.port": "/dev/ttyACM0",
+  "files.associations": {
+    "esp_netif.h": "c"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.adapterTargetName": "esp32",
+  "files.associations": {
+    "esp_random.h": "c",
+    "inttypes.h": "c",
+    "sstream": "c",
+    "regex": "c",
+    "bitset": "c",
+    "algorithm": "c",
+    "format": "c",
+    "mqtt_client.h": "c",
+    "string.h": "c",
+    "complex": "c"
+  },
+  "C_Cpp.errorSquiggles": "enabled",
+  "idf.port": "/dev/ttyUSB0",
+  "idf.openOcdConfigs": [
+    "interface/ftdi/esp32_devkitj_v1.cfg",
+    "target/esp32.cfg"
+  ]
+}
