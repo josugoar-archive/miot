@@ -1,9 +1,10 @@
 {
   "C_Cpp.intelliSenseEngine": "default",
-  "idf.adapterTargetName": "esp32c3",
+  "idf.adapterTargetName": "esp32",
   "idf.flashType": "UART",
   "idf.openOcdConfigs": [
-    "board/esp32c3-builtin.cfg"
+    "interface/ftdi/esp32_devkitj_v1.cfg",
+    "target/esp32.cfg"
   ],
-  "idf.port": "/dev/ttyACM0"
+  "idf.port": "/dev/ttyUSB0"
 }
