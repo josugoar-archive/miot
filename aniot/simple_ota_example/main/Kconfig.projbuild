@@ -1,5 +1,12 @@
 menu "Example Configuration"
 
+    config EXAMPLE_FIRMWARE_SHA256
+        string "firmware sha256"
+        default ""
+        help
+            SHA256 of the firmware image. This is used to verify the integrity
+            of the firmware image.
+
     config EXAMPLE_FIRMWARE_UPGRADE_URL
         string "firmware upgrade url endpoint"
         default "https://192.168.0.3:8070/hello_world.bin"

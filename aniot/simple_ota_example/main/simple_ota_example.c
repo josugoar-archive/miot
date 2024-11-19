@@ -6,6 +6,8 @@
    software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
    CONDITIONS OF ANY KIND, either express or implied.
 */
+#include "sdkconfig.h"
+#include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_system.h"
@@ -47,7 +49,8 @@ extern const uint8_t server_cert_pem_end[] asm("_binary_ca_cert_pem_end");
 
 esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 {
-    switch (evt->event_id) {
+    switch (evt->event_id)
+    {
     case HTTP_EVENT_ERROR:
         ESP_LOGD(TAG, "HTTP_EVENT_ERROR");
         break;
@@ -76,12 +79,13 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
     return ESP_OK;
 }
 
-void simple_ota_example_task(void *pvParameter)
+void simple_ota_example_task()
 {
     ESP_LOGI(TAG, "Starting OTA example task");
 #ifdef CONFIG_EXAMPLE_FIRMWARE_UPGRADE_BIND_IF
     esp_netif_t *netif = get_example_netif_from_desc(bind_interface_name);
-    if (netif == NULL) {
+    if (netif == NULL)
+    {
         ESP_LOGE(TAG, "Can't find netif from interface description");
         abort();
     }
@@ -105,13 +109,16 @@ void simple_ota_example_task(void *pvParameter)
 
 #ifdef CONFIG_EXAMPLE_FIRMWARE_UPGRADE_URL_FROM_STDIN
     char url_buf[OTA_URL_SIZE];
-    if (strcmp(config.url, "FROM_STDIN") == 0) {
+    if (strcmp(config.url, "FROM_STDIN") == 0)
+    {
         example_configure_stdin_stdout();
         fgets(url_buf, OTA_URL_SIZE, stdin);
         int len = strlen(url_buf);
         url_buf[len - 1] = '\0';
         config.url = url_buf;
-    } else {
+    }
+    else
+    {
         ESP_LOGE(TAG, "Configuration mismatch: wrong firmware upgrade image url");
         abort();
     }
@@ -126,14 +133,14 @@ void simple_ota_example_task(void *pvParameter)
     };
     ESP_LOGI(TAG, "Attempting to download update from %s", config.url);
     esp_err_t ret = esp_https_ota(&ota_config);
-    if (ret == ESP_OK) {
+    if (ret == ESP_OK)
+    {
         ESP_LOGI(TAG, "OTA Succeed, Rebooting...");
         esp_restart();
-    } else {
-        ESP_LOGE(TAG, "Firmware upgrade failed");
     }
-    while (1) {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    else
+    {
+        ESP_LOGE(TAG, "Firmware upgrade failed");
     }
 }
 
@@ -141,7 +148,8 @@ static void print_sha256(const uint8_t *image_hash, const char *label)
 {
     char hash_print[HASH_LEN * 2 + 1];
     hash_print[HASH_LEN * 2] = 0;
-    for (int i = 0; i < HASH_LEN; ++i) {
+    for (int i = 0; i < HASH_LEN; ++i)
+    {
         sprintf(&hash_print[i * 2], "%02x", image_hash[i]);
     }
     ESP_LOGI(TAG, "%s %s", label, hash_print);
@@ -149,13 +157,13 @@ static void print_sha256(const uint8_t *image_hash, const char *label)
 
 static void get_sha256_of_partitions(void)
 {
-    uint8_t sha_256[HASH_LEN] = { 0 };
+    uint8_t sha_256[HASH_LEN] = {0};
     esp_partition_t partition;
 
     // get sha256 digest for bootloader
-    partition.address   = ESP_BOOTLOADER_OFFSET;
-    partition.size      = ESP_PARTITION_TABLE_OFFSET;
-    partition.type      = ESP_PARTITION_TYPE_APP;
+    partition.address = ESP_BOOTLOADER_OFFSET;
+    partition.size = ESP_PARTITION_TABLE_OFFSET;
+    partition.type = ESP_PARTITION_TYPE_APP;
     esp_partition_get_sha256(&partition, sha_256);
     print_sha256(sha_256, "SHA-256 for bootloader: ");
 
@@ -169,7 +177,8 @@ void app_main(void)
     ESP_LOGI(TAG, "OTA example app_main start");
     // Initialize NVS.
     esp_err_t err = nvs_flash_init();
-    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND)
+    {
         // 1.OTA app partition table has a smaller NVS partition size than the non-OTA
         // partition table. This size mismatch may cause NVS initialization to fail.
         // 2.NVS partition contains data in new format and cannot be recognized by this version of code.
@@ -197,5 +206,27 @@ void app_main(void)
     esp_wifi_set_ps(WIFI_PS_NONE);
 #endif // CONFIG_EXAMPLE_CONNECT_WIFI
 
-    xTaskCreate(&simple_ota_example_task, "ota_example_task", 8192, NULL, 5, NULL);
+    if (esp_random() % 2 == 0)
+    {
+        esp_ota_mark_app_invalid_rollback_and_reboot();
+    }
+    else
+    {
+        esp_ota_mark_app_valid_cancel_rollback();
+    }
+
+    gpio_config_t io_conf = {
+        .pin_bit_mask = (1ULL << GPIO_NUM_0),
+        .mode = GPIO_MODE_INPUT,
+        .pull_up_en = GPIO_PULLUP_ENABLE};
+    gpio_config(&io_conf);
+
+    while (1)
+    {
+        if (gpio_get_level(GPIO_NUM_0) == 0)
+        {
+            simple_ota_example_task();
+        }
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
 }
