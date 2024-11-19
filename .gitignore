@@ -1,4 +1,6 @@
 build/
+__pycache__/
 sdkconfig
 sdkconfig.old
 settings.json
+.env
