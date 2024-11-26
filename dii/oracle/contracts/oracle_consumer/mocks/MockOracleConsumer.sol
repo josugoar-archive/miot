@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import {IOracle} from "../oracle/interfaces/IOracle.sol";
+import {IOracle} from "../../oracle/interfaces/IOracle.sol";
 import {OracleConsumer} from "../OracleConsumer.sol";
 
 contract MockOracleConsumer is OracleConsumer {
