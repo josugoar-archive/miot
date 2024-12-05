@@ -66,9 +66,9 @@ static void example_task(void *args)
             abort();
         }
         esp_dump_per_task_heap_info();
-        // if (esp_random() % 2 == 0) {
+        if (esp_random() % 2 == 0) {
             free(ptr);
-        // }
+        }
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }

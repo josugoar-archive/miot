@@ -3,7 +3,7 @@
 #include "freertos/task.h"
 #include "lora.h"
 
-uint8_t but[32];
+uint8_t buf[32];
 
 void task_rx(void *p)
 {
